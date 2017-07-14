@@ -85,7 +85,7 @@ build(){
  for VERSION in "${VERSIONS[@]}"; do
     export VERSION=${VERSION};
     build_image
-    info "Tagging image '$IMAGE:$VERSION' to '$IMAGE:$VERSION-$BUILD_NUM' ..."
+    info "Tagging image '$IMAGE:$VERSION' to '$IMAGE:$VERSION-$BUILD_NUM'..."
     run_command="docker tag $IMAGE:$VERSION $IMAGE:$VERSION-$BUILD_NUM"
     test "xtrue" = "x${verbose}" && debug "${run_command}"
     ${run_command}
@@ -97,7 +97,7 @@ build_image(){
   info "Pulling the base image..."
   run_command="$(cat ${BASE_DIR}/versions/${VERSION}/Dockerfile | grep FROM | sed 's/^FROM \(.*\)$/docker pull \1/')"
   ${run_command}
-  info "Building image '$IMAGE:$VERSION' ..."
+  info "Building image '$IMAGE:$VERSION'..."
   run_command="docker build -t $IMAGE:$VERSION -f $BASE_DIR/versions/$VERSION/Dockerfile ."
   test "xtrue" = "x${verbose}" && debug "${run_command}"
   ${run_command}
@@ -105,7 +105,7 @@ build_image(){
 
 build_test_image(){
   test -n "$VERSION" || { error "Please set --version argument to define the version you want to debug"; exit 1;}
-  info "Building image '$IMAGE_TEST:$VERSION' ..."
+  info "Building image '$IMAGE_TEST:$VERSION'..."
   run_command="docker build -t $IMAGE_TEST:$VERSION -f $BASE_DIR/versions/$VERSION/Dockerfile-tests ."
   test "xtrue" = "x${verbose}" && debug "${run_command}"
   ${run_command}
@@ -115,7 +115,7 @@ run_debug(){
   test -n "$VERSION" || { error "Please set --version argument to define the version you want to debug"; exit 1;}
   test -n "$TEST" || { error "Please set --test argument to define the test you want to debug"; exit 1; }
   test -n "${build}" && { build_image; build_test_image; }
-  info "Running test in debug '$TEST' on version '$VERSION' ..."
+  info "Running test in debug '$TEST' on version '$VERSION'..."
   rm -f .env && echo "VERSION=${VERSION}" > .env
   run_command="docker-compose -f $BASE_DIR/tests.yml -f $BASE_DIR/debug.yml run --rm $TEST"
   test "xtrue" = "x${verbose}" && debug "${run_command}"
@@ -130,7 +130,7 @@ tests(){
     test -n "${build}" && { build_image; build_test_image; }
     rm -f .env && echo "VERSION=${VERSION}" > .env
     for TEST in "${TESTS[@]}"; do
-      info "Running test '$TEST' on version '$VERSION' ..."
+      info "Running test '$TEST' on version '$VERSION'..."
       run_command="docker-compose  -f $BASE_DIR/tests.yml run --rm $TEST"
       test "xtrue" = "x${verbose}" && debug "${run_command}"
       ${run_command}
@@ -147,11 +147,11 @@ release(){
   info "Login to Docker Hub..."
   docker login --username "${DOCKERHUB_USERNAME}" --password "${DOCKERHUB_PASSWORD}"
   for VERSION in "${VERSIONS[@]}"; do
-    info "Releasing '$IMAGE:$VERSION' ..."
+    info "Releasing '$IMAGE:$VERSION'..."
     run_command="docker push $IMAGE:$VERSION"
     test "xtrue" = "x${verbose}" && debug "${run_command}"
     ${run_command}
-    info "Releasing '$IMAGE:$VERSION-$BUILD_NUM' ..."
+    info "Releasing '$IMAGE:$VERSION-$BUILD_NUM'..."
     run_command="docker push $IMAGE:$VERSION-$BUILD_NUM"
     test "xtrue" = "x${verbose}" && debug "${run_command}"
     ${run_command}
@@ -166,7 +166,7 @@ has_item "$command" "${!valid_commands[@]}" || help
 cd $BASE_DIR
 
 VERSIONS=($(ls $BASE_DIR/versions))
-IMAGE="bandsintown/alpine"
+IMAGE="bandsintown/$(basename $0)"
 IMAGE_TEST="$IMAGE-test"
 BUILD_NUM="$(git rev-parse --short HEAD)"
 TESTS=(test-image test-dns test-dns-multiple test-consul-template)

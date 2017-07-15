@@ -97,10 +97,10 @@ In the case you need to disable [Consul Template](https://github.com/hashicorp/c
 docker run -ti --entrypoint=/init -e DISABLE_CONSUL_TEMPLATE=true bandsintown/alpine bash 
 ```
 
-The `CONSUL_ADDRESS` might be passed as an environment variable to define the address of Consul:
+The `CONSUL_HTTP_ADDR` might be passed as an environment variable to define the address of Consul:
 
 ```
-docker run -ti --entrypoint=/init -e CONSUL_ADDRESS=demo.consul.io bandsintown/alpine bash 
+docker run -ti --entrypoint=/init -e CONSUL_HTTP_ADDR=demo.consul.io bandsintown/alpine bash 
 ```
 
 

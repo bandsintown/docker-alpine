@@ -12,7 +12,7 @@ services:
       - test-consul
     environment:
       - VERSION=${VERSION}
-      - CONSUL_ADDRESS=test-consul:8500
+      - CONSUL_HTTP_ADDR=test-consul:8500
 
   # Tests with only one DNS Nameserver and Search Domain
   test-dns:
@@ -44,7 +44,7 @@ services:
       - test-consul
     environment:
       - DISABLE_CONSUL_TEMPLATE=true
-      - CONSUL_ADDRESS=test-consul:8500
+      - CONSUL_HTTP_ADDR=test-consul:8500
       - VERSION=${VERSION}
 
   # Consul

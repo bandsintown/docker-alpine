@@ -3,7 +3,7 @@
   [ $status -eq 0 ]
 }
 
-@test "environment variable 'CONSUL_ADDRESS' is set" {
-  run test -n "${CONSUL_ADDRESS}"
+@test "environment variable 'CONSUL_HTTP_ADDR' is set" {
+  run test -n "${CONSUL_HTTP_ADDR}"
   [ $status -eq 0 ]
 }

@@ -4,8 +4,8 @@ if [ "${DISABLE_CONSUL_TEMPLATE}" = "true" ]; then
   exit 0
 fi
 
-if [ -n "${CONSUL_ADDRESS}" -a -d /etc/consul-template/conf ]; then
+if [ -n "${CONSUL_HTTP_ADDR}" -a -d /etc/consul-template/conf ]; then
   su-exec ${CONSUL_TEMPLATE_USER:-root} consul-template \
-       -consul ${CONSUL_ADDRESS} \
+       -consul ${CONSUL_HTTP_ADDR} \
        -config "/etc/consul-template/conf"
 fi

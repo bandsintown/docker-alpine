@@ -1,3 +1,21 @@
+## v1.1.1
+
+### Improvements
+
+ - Rename environment variable `CONSUL_ADDRESS` to `CONSUL_HTTP_ADDR` to be compliant with Consul naming
+ 
+## v1.1.0
+
+### Features
+
+ - Release Alpine 3.6
+
+## v1.0.4 (May 04, 2017) 
+
+### Bugs
+
+- Fix trailing carriage return  in variables registered as container environment variables
+
 ## v1.0.3 (April 20, 2017) 
 
 ### Improvements
@@ -17,7 +35,7 @@ The following package has been added:
 
 The following environment variable have been added:
   - `EC2_IP`: Defines the IP of the EC2 instance when the container is running on AWS.
-  - `CONSUL_ADDRESS`: The address of Consul agent. This variable is inferred from `EC2_IP` and the Consul port is the HTTP port (`8500`). 
+  - `CONSUL_HTTP_ADDR`: The address of Consul agent. This variable is inferred from `EC2_IP` and the Consul port is the HTTP port (`8500`). 
   It's possible to define another port with the variable `CONSUL_PORT`
 
   

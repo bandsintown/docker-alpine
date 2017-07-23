@@ -1,4 +1,5 @@
 [![Build status](https://badge.buildkite.com/f78e045c0b561ba33f80f3c996ccfe89b49ade24b832f92bfd.svg)](https://buildkite.com/bandsintown/docker-alpine)
+[![Docker layers](https://images.microbadger.com/badges/image/bandsintown/alpine.svg)](http://microbadger.com/images/bandsintown/alpine)
 	
 # What is Alpine Linux?
 
@@ -57,29 +58,9 @@ or :
 docker run -ti bandsintown/alpine
 ```
 
-## Supervised usage
+## Supervised services
 
-By default the [s6 supervisor](https://github.com/just-containers/s6-overlay) is not enabled because the `ENTRYPOINT` is not defined.
-
-To use s6 as a supervisor and enabling the pre-bundled services 
-([DNS resolver](https://github.com/janeczku/go-dnsmasq)  and [Consul Template](https://github.com/hashicorp/consul-template)) 
-you have to define an `entrypoint`: 
-
-```Dockerfile
-FROM bandsintown/alpine
-RUN apk-install <package_name>
-
-ENTRYPOINT ["/init"]
-CMD ["/bin/bash"]
-```
-
-or :
-
-```
-docker run -ti --entrypoint=/init bandsintown/alpine bash 
-```
-
-## Manage services
+By default the [s6 supervisor](https://github.com/just-containers/s6-overlay) is enabled because the `ENTRYPOINT` is  defined to `/init`.
 
 ### DNS resolver
 

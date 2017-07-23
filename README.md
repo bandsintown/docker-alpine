@@ -1,4 +1,8 @@
+[![dockeri.co](http://dockeri.co/image/bandsintown/alpine)](https://hub.docker.com/r/bandsintown/alpine/)
+
 [![Build status](https://badge.buildkite.com/f78e045c0b561ba33f80f3c996ccfe89b49ade24b832f92bfd.svg)](https://buildkite.com/bandsintown/docker-alpine)
+[![GitHub issues](https://img.shields.io/github/issues/bandsintown/docker-alpine.svg "GitHub issues")](https://github.com/bandsintown/docker-alpine)
+[![GitHub stars](https://img.shields.io/github/stars/bandsintown/docker-alpine.svg "GitHub stars")](https://github.com/bandsintown/docker-alpine)
 [![Docker layers](https://images.microbadger.com/badges/image/bandsintown/alpine.svg)](http://microbadger.com/images/bandsintown/alpine)
 	
 # What is Alpine Linux?

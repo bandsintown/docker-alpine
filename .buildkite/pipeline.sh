@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set +x
 
+TRIGGER_PIPELINES=(docker-fluentd docker-geoip docker-nginx docker-openjdk)
 RELEASE_NAME=$(buildkite-agent meta-data get release-name || echo "n/a")
 
 # Define release hint for Github release
@@ -10,6 +11,7 @@ If the tag isn’t meant for production use, add a pre-release version after the
 EOF
 
 set -e
+
 
 # Master banch before Github release
 if [ "$RELEASE_NAME" == "n/a"  -a "$BUILDKITE_BRANCH" == 'master' ]; then
@@ -54,7 +56,17 @@ steps:
   - wait
   - label: ':docker: Release on Dockerhub'
     command: bin/alpine release
+  - wait
 EOF
+for TRIGGER_PIPELINE in ${TRIGGER_PIPELINES[@]}; do
+cat <<EOF
+  - trigger: "$TRIGGER_PIPELINE"
+    label: "Trigger pipeline $TRIGGER_PIPELINE"
+    async: true
+    build:
+      message: "Build triggered after releasing 'bandsintown/alpine' images ($RELEASE_NAME)"
+EOF
+done
 exit 0
 fi
 

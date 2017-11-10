@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set +x
 
-TRIGGER_PIPELINES=(docker-fluentd docker-geoip docker-nginx docker-openjdk docker-prometheus)
+TRIGGER_PIPELINES=(docker-node docker-ruby docker-fluentd docker-geoip docker-nginx docker-openjdk docker-prometheus)
 RELEASE_NAME=$(buildkite-agent meta-data get release-name || echo "n/a")
 
 # Define release hint for Github release

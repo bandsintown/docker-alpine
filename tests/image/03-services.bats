@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 
 # ------ DNSMasq ------
 
@@ -12,19 +13,6 @@
 }
 
 
-@test "service 'go-dnsmasq' is supervised" {
-  service="go-dnsmasq"
-  pid=$(ps -o pid,comm | grep "$service" | awk '{$1=$1};1' | cut -d' ' -f1)
-  [ "$pid" -gt 0 ]
-
-  kill -9 $pid && sleep 1
-
-  new_pid=$(ps -o pid,comm | grep "$service" | awk '{$1=$1};1' | cut -d' ' -f1)
-  [ "$new_pid" -gt 0 ]
-
-  [ "$pid" != "$new_pid" ]
-}
-
 # ------ Consul Template ------
 
 @test "service 'consul-template' should be installed" {
@@ -32,16 +20,8 @@
   [ $status -eq 0 ]
 }
 
-
-@test "service 'consul-template' is supervised" {
-  service="consul-template"
-  pid=$(ps -o pid,comm | grep "$service" | awk '{$1=$1};1' | cut -d' ' -f1)
-  [ "$pid" -gt 0 ]
-
-  kill -9 $pid && sleep 1
-
-  new_pid=$(ps -o pid,comm | grep "$service" | awk '{$1=$1};1' | cut -d' ' -f1)
-  [ "$new_pid" -gt 0 ]
-
-  [ "$pid" != "$new_pid" ]
+@test "service 'consul-template' is running" {
+  status=$(ps -o pid,comm | grep consul-template 2>&1 >/dev/null;echo $?)
+  [ $status -eq 0 ]
 }
+

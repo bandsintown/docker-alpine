@@ -6,4 +6,4 @@ service {{ .Name }}: {{ .Address }}:{{ .Port }}
 {{ end }}
 
 # Define Tests for kv functions
-key_or_default: {{ key_or_default "tests/key_or_default" "default" }}
+keyOrDefault: {{ keyOrDefault "tests/keyOrDefault" "default" }}

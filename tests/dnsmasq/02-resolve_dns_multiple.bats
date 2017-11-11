@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 @test "DNS resolver picked up both nameservers from resolv.conf" {
   skip "Need to fix this test case"
   run cat /var/log/s6-uncaught-logs/current

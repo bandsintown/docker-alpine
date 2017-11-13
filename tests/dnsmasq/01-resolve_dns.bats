@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 @test "DNS resolver is accepting requests" {
   run nslookup -retry=0 -t=2 -q=txt -class=CHAOS version.bind 127.0.0.1
   [ $status -eq 0 ]

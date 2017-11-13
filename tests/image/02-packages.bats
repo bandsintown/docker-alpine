@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 @test "package 'curl' should be present" {
   run which curl
   [ $status -eq 0 ]

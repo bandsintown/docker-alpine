@@ -6,6 +6,6 @@ fi
 
 if [ -n "${CONSUL_HTTP_ADDR}" -a -d /etc/consul-template/conf ]; then
   su-exec ${CONSUL_TEMPLATE_USER:-root} consul-template \
-       -consul ${CONSUL_HTTP_ADDR} \
+       -consul-addr ${CONSUL_HTTP_ADDR} \
        -config "/etc/consul-template/conf"
 fi

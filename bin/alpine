@@ -94,11 +94,8 @@ build(){
 
 build_image(){
   test -n "$VERSION" || { error "Please set --version argument to define the version you want to debug"; exit 1;}
-  info "Pulling the base image..."
-  run_command="$(cat ${BASE_DIR}/versions/${VERSION}/Dockerfile | grep FROM | sed 's/^FROM \(.*\)$/docker pull \1/')"
-  ${run_command}
   info "Building image '$IMAGE:$VERSION'..."
-  run_command="docker build -t $IMAGE:$VERSION -f $BASE_DIR/versions/$VERSION/Dockerfile ."
+  run_command="docker build --pull -t $IMAGE:$VERSION -f $BASE_DIR/versions/$VERSION/Dockerfile ."
   test "xtrue" = "x${verbose}" && debug "${run_command}"
   ${run_command}
 }

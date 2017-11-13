@@ -5,7 +5,7 @@
 FROM gliderlabs/alpine:3.4
 MAINTAINER Bandsintown Devops Team "devops@bandsintown.com"
 
-ENV S6_OVERLAY_VERSION=1.18.1.5 GODNSMASQ_VERSION=1.0.7 CONSUL_TEMPLATE_VERSION=0.16.0
+ENV S6_OVERLAY_VERSION=1.18.1.5 GODNSMASQ_VERSION=1.0.7 CONSUL_TEMPLATE_VERSION=0.19.4
 
 # Install root filesystem
 ADD ./rootfs /

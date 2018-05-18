@@ -12,6 +12,7 @@ COPY rootfs /
 
 # Install base packages
 RUN apk update && apk upgrade && \
+	apk add busybox && apk add busybox-extras && \
     apk-install curl wget bash tree jq bind-tools su-exec && \
     chmod u+s /sbin/su-exec && \
     curl -Ls https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-amd64.tar.gz | tar -xz -C / && \

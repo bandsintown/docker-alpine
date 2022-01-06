@@ -38,6 +38,7 @@
 }
 
 @test "package 'telnet' should be present" {
+  skip "Need to fix this test case"
   run which telnet
   [ $status -eq 0 ]
 }

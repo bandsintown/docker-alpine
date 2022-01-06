@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set +x
 
-TRIGGER_PIPELINES=(docker-node docker-ruby docker-fluentd docker-geoip docker-nginx docker-openjdk docker-prometheus docker-php)
+#TRIGGER_PIPELINES=(docker-node docker-ruby docker-fluentd docker-geoip docker-nginx docker-openjdk docker-prometheus docker-php)
 RELEASE_NAME=$(buildkite-agent meta-data get release-name || echo "n/a")
 
 # Define release hint for Github release
@@ -58,15 +58,15 @@ steps:
     command: bin/alpine release
   - wait
 EOF
-for TRIGGER_PIPELINE in ${TRIGGER_PIPELINES[@]}; do
-cat <<EOF
-  - trigger: "$TRIGGER_PIPELINE"
-    label: "Trigger pipeline $TRIGGER_PIPELINE"
-    async: true
-    build:
-      message: "Build triggered after releasing 'bandsintown/alpine' images ($RELEASE_NAME)"
-EOF
-done
+#for TRIGGER_PIPELINE in ${TRIGGER_PIPELINES[@]}; do
+#cat <<EOF
+#  - trigger: "$TRIGGER_PIPELINE"
+#    label: "Trigger pipeline $TRIGGER_PIPELINE"
+#    async: true
+#    build:
+#      message: "Build triggered after releasing 'bandsintown/alpine' images ($RELEASE_NAME)"
+#EOF
+#done
 exit 0
 fi
 

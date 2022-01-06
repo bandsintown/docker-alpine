@@ -2,7 +2,7 @@
 # Base Alpine Linux image
 #
 
-FROM alpine:3.5
+FROM alpine:3.15.0
 MAINTAINER Bandsintown Devops Team "devops@bandsintown.com"
 
 ENV S6_OVERLAY_VERSION=1.19.1.1 GODNSMASQ_VERSION=1.0.7 CONSUL_TEMPLATE_VERSION=0.19.4 CONSUL_VERSION=0.7.5

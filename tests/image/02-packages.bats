@@ -37,10 +37,11 @@
   [ $status -eq 0 ]
 }
 
-#@test "package 'telnet' should be present" {
-#  run which telnet
-#  [ $status -eq 0 ]
-#}
+@test "package 'telnet' should be present" {
+  skip "Need to fix this test case"
+  run which telnet
+  [ $status -eq 0 ]
+}
 
 @test "package 'consul-template' should be present" {
   run which consul-template

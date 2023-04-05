@@ -2,7 +2,7 @@
 # Base Alpine Linux image
 #
 
-FROM alpine:3.15.0
+FROM alpine:3.17.3
 MAINTAINER Bandsintown Devops Team "devops@bandsintown.com"
 
 ENV S6_OVERLAY_VERSION=1.19.1.1 GODNSMASQ_VERSION=1.0.7 CONSUL_TEMPLATE_VERSION=0.19.4 CONSUL_VERSION=0.7.5
@@ -20,7 +20,7 @@ RUN apk update && apk upgrade && \
     curl -Ls https://github.com/janeczku/go-dnsmasq/releases/download/${GODNSMASQ_VERSION}/go-dnsmasq-min_linux-amd64 -o /usr/sbin/go-dnsmasq &&  \
     rm -f consul* && \
     chmod +x /usr/sbin/go-dnsmasq && \
-    echo -ne "Alpine Linux 3.15.0 image. (`uname -rsv`)\n" >> /root/.built && \
+    echo -ne "Alpine Linux 3.17.3 image. (`uname -rsv`)\n" >> /root/.built && \
     echo -ne "- with S6 Overlay: $S6_OVERLAY_VERSION, GoDnsMasq: $GODNSMASQ_VERSION, Consul Template: $CONSUL_TEMPLATE_VERSION, Consul: $CONSUL_VERSION\n" >> /root/.built
 
 # Disable S6 logs on stdout/stderr

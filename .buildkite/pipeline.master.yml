@@ -1,0 +1,44 @@
+steps:
+  - block: ":question::rocket: Do you want to release to Dockerhub?"
+    fields:
+      - select: Do you want to prepare a version for release?
+        key: "prepare-release"
+        options:
+          - label: "Yes"
+            value: "yes"
+          - label: "No"
+            value: "no"
+
+  - label: Prepare Dockerhub release
+    if: $(buildkite-agent meta-data get prepare-release) == "yes"
+    command: buildkite-agent pipeline upload .buildkite/pipeline.prepare-release.yml
+
+  - block: ":github: Prepare Github Release"
+    prompt: Fill out the details for release
+    fields:
+      - text: Release name
+        key: release-name
+        required: true
+        hint: |
+          It's common practice to prefix your version names with the letter v.
+          Some good tag names might be v1.0 or v2.3.4.
+          If the tag isn't meant for production use, add a pre-release version
+          after the version name. Some good pre-release versions might be
+          v0.2-alpha or v5.9-beta.3.
+      - text: Describe this release
+        key: release-notes
+        required: false
+        hint: List of what's changed in this release
+      - select: Release type
+        key: release-type
+        default: draft
+        options:
+        - label: Draft
+          value: draft
+        - label: Pre-release
+          value: pre-release
+        - label: Release
+          value: release
+
+  - label: ":github: Create Github release"
+    command: .buildkite/release.sh

@@ -10,7 +10,7 @@ steps:
             value: "no"
 
   - label: Prepare Dockerhub release
-    if: $(buildkite-agent meta-data get prepare-release) == "yes"
+    if: buildkite-agent meta-data get prepare-release == "yes"
     command: buildkite-agent pipeline upload .buildkite/pipeline.prepare-release.yml
 
   - block: ":github: Prepare Github Release"

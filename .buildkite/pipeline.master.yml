@@ -1,17 +1,5 @@
 steps:
-  - block: ":question::rocket: Do you want to release to Dockerhub?"
-    fields:
-      - select: Do you want to prepare a version for release?
-        key: "prepare-release"
-        options:
-          - label: "Yes"
-            value: "yes"
-          - label: "No"
-            value: "no"
-
   - label: Prepare Dockerhub release
-    if: |
-      "$$(buildkite-agent meta-data get prepare-release --default 'NA')" == "yes"
     command: buildkite-agent pipeline upload .buildkite/pipeline.prepare-release.yml
 
   - block: ":github: Prepare Github Release"

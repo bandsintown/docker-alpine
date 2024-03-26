@@ -11,14 +11,7 @@ steps:
 
   - label: Prepare Dockerhub release
     if: |
-      PREPARE_RELEASE="$$(buildkite-agent meta-data get prepare-release --default 'NA')"
-
-      if [PREPARE_RELEASE == "yes"]; then;
-        exit 0
-      fi
-
-      exit 1
-
+      "$$(buildkite-agent meta-data get prepare-release --default 'NA')" == "yes"
     command: buildkite-agent pipeline upload .buildkite/pipeline.prepare-release.yml
 
   - block: ":github: Prepare Github Release"

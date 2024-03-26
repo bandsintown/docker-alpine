@@ -13,6 +13,8 @@ steps:
             - alpine:${IMAGE}:${VERSION}
             - alpine:${IMAGE}:${VERSION}-${BUILDKITE_COMMIT:0:7}
 
+  - wait
+
   - label: ":docker: Tag as latest and Push Alpine v${VERSION}"
     if: build.env("VERSION_IS_LATEST") == "yes"
     plugins:

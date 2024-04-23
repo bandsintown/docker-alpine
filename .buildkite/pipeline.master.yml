@@ -1,6 +1,55 @@
+env:
+  PIPELINE_NAME: docker-alpine
+
 steps:
-  - label: Prepare Dockerhub release
-    command: buildkite-agent pipeline upload .buildkite/pipeline.prepare-release.yml
+  - input: What version do you want to build and release?
+    fields:
+      - select: Release Version
+        key: selected-version
+        hint: "Only the 5 latest versions are shown"
+        required: true
+        options:
+          - label: v3.19.1
+            value: 3.19.1
+          - label: v3.17.3
+            value: 3.17.3
+          - label: v3.15.0
+            value: 3.15.0
+          - label: v3.7
+            value: 3.7
+
+  - block: Tag version as latest?
+    fields:
+      - select: Tag this version as latest?
+        key: version-is-latest
+        required: true
+        default: no
+        options:
+          - label: Yes
+            value: yes
+          - label: No
+            value: no
+
+  - wait
+
+  - label: Trigger Build and Release pipeline
+    command: |
+      VERSION="$$(buildkite-agent meta-data get selected-version --default 'NA')"
+      VERSION_IS_LATEST="$$(buildkite-agent meta-data get version-is-latest --default 'NA')"
+
+      cat <<- YAML | buildkite-agent pipeline upload
+      steps:
+        - trigger: ${PIPELINE_NAME}
+          async: true
+          label: ":construction::building_construction: Trigger deploy for version $$VERSION"
+          build:
+            commit: "${BUILDKITE_COMMIT}"
+            branch: "${BUILDKITE_BRANCH}"
+            env:
+              VERSION: "$$VERSION"
+              VERSION_IS_LATEST: "$$VERSION_IS_LATEST"
+              DEPLOY_SERVICE: release
+      YAML
 
   - block: ":github: Prepare Github Release"
     prompt: Fill out the details for release

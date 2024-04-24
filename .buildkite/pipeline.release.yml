@@ -6,11 +6,8 @@ steps:
     if: build.env("VERSION") != "NA"
     plugins:
       - docker-compose#v5.2.0:
-          cli-version: 1
-          buildkit: false
           build: alpine
           push:
-            - alpine:${IMAGE}:${VERSION}
             - alpine:${IMAGE}:${VERSION}-${BUILDKITE_COMMIT:0:7}
 
   - wait
@@ -19,7 +16,6 @@ steps:
     if: build.env("VERSION_IS_LATEST") == "yes"
     plugins:
       - docker-compose#v5.2.0:
-          cli-version: 1
-          buildkit: false
           push:
+            - alpine:${IMAGE}:${VERSION}
             - alpine:${IMAGE}:latest

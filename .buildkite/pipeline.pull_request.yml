@@ -1,3 +1,44 @@
+env:
+  PIPELINE_NAME: docker-alpine
+
 steps:
-  - label: ":docker: Prepare Dockerhub release"
-    command: buildkite-agent pipeline upload .buildkite/pipeline.prepare-release.yml
+  - block: ":question::hammer: What version do you want to test?"
+    fields:
+      - select: Select a version to test
+        key: selected-version
+        required: true
+        options:
+          - label: v3.19.1
+            value: 3.19.1
+          - label: v3.17.3
+            value: 3.17.3
+          - label: v3.15.0
+            value: 3.15.0
+          - label: v3.7
+            value: 3.7
+
+  - label: ":hammer::docker: Running tests for the selected version"
+    command: |
+      VERSION="$$(buildkite-agent meta-data get selected-version --default 'NA')"
+
+      bin/alpine tests --version "$${VERSION}" --build
+
+  - block: ":question::hammer: Do you want to release this version?"
+
+  - label: Trigger Build and Release pipeline
+    command: |
+      VERSION="$$(buildkite-agent meta-data get selected-version --default 'NA')"
+
+      cat <<- YAML | buildkite-agent pipeline upload
+      steps:
+        - trigger: ${PIPELINE_NAME}
+          async: true
+          label: ":construction::building_construction: Trigger release for version $$VERSION"
+          build:
+            commit: "${BUILDKITE_COMMIT}"
+            branch: "${BUILDKITE_BRANCH}"
+            env:
+              VERSION: "$$VERSION"
+              VERSION_IS_LATEST: no
+              DEPLOY_SERVICE: release
+      YAML

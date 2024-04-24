@@ -1,8 +1,12 @@
-FROM bandsintown/alpine:3.17.0
+FROM %%NAMESPACE%%/%%PARENT%%:%%VERSION_FULL%%
 
 ENV BATS_VERSION=0.4.0 DOCKERIZE_VERSION=v0.2.0
 
 COPY tests /tests
+WORKDIR /tests
+
+COPY tests /tests
+COPY bin /tests/bin
 WORKDIR /tests
 
 RUN exec 2>&1 && apk-install bind-tools bc jq \
@@ -15,6 +19,5 @@ RUN exec 2>&1 && apk-install bind-tools bc jq \
     && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
 	&& rm -f bats.zip dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
     && mv /tests/consul-template/etc /etc/consul-template
-
 
 CMD ["bash"]

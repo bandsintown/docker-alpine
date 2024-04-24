@@ -1,7 +1,68 @@
-version: '3'
-
 services:
   alpine:
     build:
-      context: .
-      dockerfile: ./versions/${VERSION}/Dockerfile
+        context: .
+        dockerfile: ./versions/${VERSION}/Dockerfile
+    image: bandsintown/alpine:${VERSION}
+
+  alpine-test:
+    build:
+        context: .
+        dockerfile: ./versions/${VERSION}/test/Dockerfile
+    image: bandsintown/alpine:${VERSION}-test
+
+  test-image-base:
+    image: bandsintown/alpine:${VERSION}-test
+    command: dockerize -wait http://consul:8500 -timeout 10s bats /tests/image
+    depends_on:
+      - consul
+    environment:
+      - VERSION=${VERSION}
+      - CONSUL_HTTP_ADDR=consul:8500
+
+  # Tests with only one DNS Nameserver and Search Domain
+  test-image-dns:
+    image: bandsintown/alpine:${VERSION}-test
+    command: bats /tests/dnsmasq/01-resolve_dns.bats
+    dns: 8.8.4.4
+    dns_search: 10.0.0.1.xip.io
+    environment:
+      - VERSION=${VERSION}
+
+  # Tests with Multiple DNS Nameserver and Search Domain
+  test-image-dns-multiple:
+    image: bandsintown/alpine:${VERSION}-test
+    command: bats /tests/dnsmasq/02-resolve_dns_multiple.bats
+    dns:
+     - 8.8.4.4
+     - 8.8.8.8
+    dns_search:
+      - google.com
+      - video.google.com
+    environment:
+      - VERSION=${VERSION}
+
+  # Tests for consul template
+  test-image-consul-template:
+    image: bandsintown/alpine:${VERSION}-test
+    command: dockerize -wait http://consul:8500 -timeout 10s bats /tests/consul-template
+    depends_on:
+      - consul
+    environment:
+      - DISABLE_CONSUL_TEMPLATE=true
+      - CONSUL_HTTP_ADDR=consul:8500
+      - VERSION=${VERSION}
+
+  # Consul
+  consul:
+    image: consul:0.7.5
+    command: "agent -dev -client 0.0.0.0 -ui"
+    ports:
+      - 8500
+    environment:
+      - CONSUL_BIND_INTERFACE=eth0
+
+    # We disable the log in order to increase lisibility in CI
+    logging:
+      driver: "none"
+

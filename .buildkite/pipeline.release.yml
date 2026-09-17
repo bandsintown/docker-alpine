@@ -12,10 +12,16 @@ steps:
 
   - wait
 
+  - label: ":docker: Tag and Push Alpine v${VERSION}"
+    if: build.env("VERSION") != "NA"
+    plugins:
+      - docker-compose#v5.2.0:
+          push:
+            - alpine:${IMAGE}:${VERSION}
+
   - label: ":docker: Tag as latest and Push Alpine v${VERSION}"
     if: build.env("VERSION_IS_LATEST") == "yes"
     plugins:
       - docker-compose#v5.2.0:
           push:
-            - alpine:${IMAGE}:${VERSION}
             - alpine:${IMAGE}:latest

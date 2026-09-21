@@ -8,6 +8,8 @@ steps:
         key: selected-version
         required: true
         options:
+          - label: v3.24.0
+            value: 3.24.0
           - label: v3.23.5
             value: 3.23.5
           - label: v3.19.1

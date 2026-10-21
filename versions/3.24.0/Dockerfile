@@ -11,9 +11,9 @@ ENV S6_OVERLAY_VERSION=1.19.1.1 GODNSMASQ_VERSION=1.0.7 CONSUL_TEMPLATE_VERSION=
 COPY rootfs /
 
 # Install base packages.
-# `apk upgrade --available` pulls the latest Alpine security fixes on every
-# build. Changing this block also invalidates the build cache, so a rebuild
-# can't reuse an old upgrade layer. Last rebuilt for zlib 1.3.2-r1
+# Fetch current Alpine security fixes whenever this RUN instruction executes.
+# This RUN change invalidates the old layer once; use docker build --no-cache
+# for subsequent security rebuilds. Last rebuilt for zlib 1.3.2-r1
 # (SNYK-ALPINE324-ZLIB-20541555) and bind-libs/bind-tools 9.20.29-r0
 # (CVE-2026-81563, CVE-2026-81736, CVE-2026-19667).
 RUN apk upgrade --no-cache --available && \
